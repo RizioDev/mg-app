@@ -6,6 +6,7 @@ const {
   getClienteByName,
   getClientByPk,
   updateClient,
+  deleteClient,
 } = require("../controllers/clientCotroller");
 
 router.get("/", (req, res) => {
@@ -45,19 +46,28 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const client = await getClientByPk(req.params.id);
-    const id = req.params.id;
-    const { addedJoya, nombre, relojes } = req.body;
-    console.log(addedJoya, client.joyas);
-    const updatedData = [...client.joyas, addedJoya];
-    // console.log("joyas", joyas);
-    const obj = { joyas: updatedData };
-    const updateCliente = await updateClient(obj, id);
-    return res.status(200).send(updateCliente);
+    deleteClient(id);
+    res.send(`cliente eliminado correctamente`);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { nombre, telefono } = req.body;
+  const info = { nombre, telefono };
+
+  try {
+    // console.log("soy info", info);
+    updateClient(info, id);
+    res.send("cliente actualizado con exito");
   } catch (error) {
     console.log(error);
+    res.status(500).send(error);
   }
 });
 

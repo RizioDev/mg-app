@@ -34,37 +34,16 @@ const getClient = async (id) => {
 };
 
 const updateClient = async (info, id) => {
+  // console.log("soy info", info);
   try {
-    console.log("soy info", id);
-    await Cliente.update(
-      {
-        nombre: info.nombre,
-        telefono: info.telefono,
-      },
-      {
-        where: {
-          id,
-        },
-      }
+    const result = await Cliente.update(
+      { nombre: info.nombre, telefono: info.telefono },
+      { where: { id } }
     );
-
-    return `client id:${id} updated successfully`;
+    return result;
   } catch (error) {
-    return `Ocurrio el siguiente errror: ${error}`;
+    return error;
   }
-
-  // const [response] = await Cliente.update(info, {
-  //   where: {
-  //     joyas,
-  //     reloj,
-  //     nombre,
-  //   },
-  // });
-  // if (response) {
-  //   return `client id:${id} updated successfully`;
-  // } else {
-  //   throw new Error("product not found");
-  // }
 };
 
 const getClientByPk = async (id) => {
@@ -89,17 +68,6 @@ const createClient = async (info) => {
   return `cliente ${info.nombre} creado correctamente`;
 };
 
-// const addJoya = async (id, info) => {
-//   let addJoya = info.joya;
-
-//   await Cliente.update({asd
-//     where: {
-//       id,
-//       joyas: { ...joyas, addJoya },
-//     },
-//   });
-// };
-
 const getClienteByName = async (nombre) => {
   const clientes = await Cliente.findAll({
     where: {
@@ -111,42 +79,17 @@ const getClienteByName = async (nombre) => {
   return clientes;
 };
 
+const deleteClient = async (id) => {
+  await Cliente.destroy({ where: { id } });
+  return `cliente con el id ${id} fue eliminado correctamente`;
+};
+
 module.exports = {
   createClient,
+  deleteClient,
   getClientByPk,
   getDbClients,
   getClienteByName,
   updateClient,
   getClient,
 };
-
-// const getClients = async (req, res) => {
-//   const { nombre } = req.query;
-
-//   if (nombre) {
-//     Cliente.findAll({
-//       include: {
-//         model: Arreglo,
-//       },
-//       where: {
-//         nombre: nombre,
-//       },
-//     })
-//       .then((cliente) => {
-//         return res.status(200).json(cliente.length >= 1 ? cliente : []);
-//       })
-//       .catch((error) => {
-//         res.send(error);
-//       });
-//   } else {
-//     Cliente.findAll({
-//       include: {
-//         model: Arreglo,
-//       },
-//     })
-//       .then((cliente) => {
-//         res.status(200).json(cliente.length >= 1 ? cliente : []);
-//       })
-//       .catch((error) => res.send(error));
-//   }
-// };
