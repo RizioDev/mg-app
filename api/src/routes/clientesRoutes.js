@@ -36,6 +36,26 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/:id/arreglos", async (req, res) => {
+  try {
+    const cliente = await getClientByPk(req.params.id);
+    if (!cliente) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+
+    const nuevoArreglo = req.body;
+    cliente.arreglos.push(nuevoArreglo);
+    await cliente.save();
+
+    res.json({ message: "Objeto agregado al arreglo del cliente", cliente });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error al agregar objeto al arreglo del cliente" });
+  }
+});
+
 router.post("/", (req, res) => {
   try {
     // const { nombre, id, relojes, joyas } = req.body;

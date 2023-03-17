@@ -17,5 +17,9 @@ module.exports = (sequelize) => {
     telefono: {
       type: DataTypes.INTEGER,
     },
+    arreglos: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
+      defaultValue: [],
+    },
   });
 };

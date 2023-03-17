@@ -7,11 +7,7 @@ const ObjUsers = {
 };
 
 const getDbClients = async () => {
-  let clients = await Cliente.findAll({
-    include: {
-      model: Arreglos,
-    },
-  });
+  let clients = await Cliente.findAll();
   if (!clients.length) {
     clients = await Cliente.create(ObjUsers);
     return clients;
@@ -22,9 +18,6 @@ const getDbClients = async () => {
 const getClient = async (id) => {
   try {
     const client = await Cliente.findAll({
-      include: {
-        model: Arreglos,
-      },
       where: { id },
     });
     return client;
@@ -49,9 +42,6 @@ const updateClient = async (info, id) => {
 const getClientByPk = async (id) => {
   const cliente = await Cliente.findOne({
     where: { id },
-    include: {
-      model: Arreglos,
-    },
   });
   if (!cliente) {
     throw new Error("cliente no encontrado");
